@@ -1,5 +1,5 @@
 let mongoose = require('mongoose')
-let User = mongoose.model('Users', {
+var User = mongoose.model('Users', {
     name: {
         type: String,
         trim: true,
