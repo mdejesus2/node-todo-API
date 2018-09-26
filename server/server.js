@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const {ObjectID} = require('mongodb');
 
 const mongoose = require('./db/mongoose');
 
@@ -29,6 +30,21 @@ app.get('/todos', (req, res) =>{
     }, (e) => {
         res.status(400).send(e);    
     });
+});
+
+app.get('/todos/:id', (req, res) => {
+    let id = req.params.id;
+    if (!ObjectID.isValid(id)) {
+        return res.status(400).send('el id suministrado no es valido');
+    } 
+    Todo.findById(id).then((todos) => {
+        if(!todos) {
+           return res.status(404).send(`el id ${id} no fue encontrado en la collection`);
+        }
+        res.send({todos});
+    }, (e) => {
+        res.status(404).send()
+    })
 });
 
 app.listen(3000, () => {
